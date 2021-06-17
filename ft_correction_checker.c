@@ -3,7 +3,6 @@ int	ft_observe_level(int **map, int position)
 	int	i;
 	int	observe;
 	int	height;
-	int	limit;
 
 	height = 0;
 	observe = 0;
@@ -23,7 +22,6 @@ int	ft_observe_level(int **map, int position)
 int	ft_is_observed_correctly(int **map, int *params)
 {
 	int	i;
-	int	j;
 
 	i = 0;
 	while (i < 16)

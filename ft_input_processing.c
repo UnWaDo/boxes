@@ -1,4 +1,6 @@
-int	ft_atoi(char *str);
+void	ft_print(char *str);
+
+int		ft_atoi(char *str);
 
 int	ft_process_params(int argc, char **argv, int *params)
 {
@@ -61,6 +63,35 @@ int	ft_is_input_correct(int *params)
 			j++;
 		}
 		i++;
+	}
+	return (1);
+}
+
+int	ft_is_arguments_correct(int argc, char **argv, int *params)
+{
+	int	status;
+
+	if (argc <= 16)
+	{
+		ft_print("Not enough arguments\n");
+		return (0);
+	}
+	else if (argc > 17)
+	{
+		ft_print("Too many arguments\n");
+		return (0);
+	}
+	status = ft_process_params(argc, argv, params);
+	if (!status)
+	{
+		ft_print("Invalid arguments input\n");
+		return (0);
+	}
+	status = ft_is_input_correct(params);
+	if (!status)
+	{
+		ft_print("Impossible transposition\n");
+		return (0);
 	}
 	return (1);
 }
