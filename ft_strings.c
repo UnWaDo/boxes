@@ -1,4 +1,3 @@
-#include "ft_io.h"
 #include "ft_memory.h"
 
 int	ft_is_in_str(char c, char *str)
@@ -51,23 +50,23 @@ int	ft_strlen_sep(char *str, char *sep)
 	return (i);
 }
 
-char	*ft_strldup(char *str, int n)
+char	*ft_strldup(char **dest, char *str, char *sep)
 {
-	int	i;
-	char	*res;
+	int		i;
+	int		len;
 
-	res = malloc(sizeof(*str) * (n + 1));
-	if (!res)
+	len = ft_strlen_sep(str, sep);
+	*dest = malloc(sizeof(*str) * (len + 1));
+	if (!(*dest))
 		return (0);
-
 	i = 0;
-	while (str[i] && i < n)
+	while (i < len)
 	{
-		res[i] = str[i];
+		(*dest)[i] = str[i];
 		i++;
 	}
-	res[i] = 0;
-	return (res);
+	(*dest)[i] = 0;
+	return (str + i);
 }
 
 char	**ft_split(char *str, char *sep)
@@ -75,26 +74,23 @@ char	**ft_split(char *str, char *sep)
 	int		i;
 	int		amount;
 	char	**res;
-	int		len;
 
 	amount = ft_word_count(str, sep);
 	res = malloc((amount + 1) * sizeof(*res));
 	if (!res)
-		return (0);	
+		return (0);
 	i = 0;
 	while (i < amount)
 	{
 		if (!ft_is_in_str(*str, sep))
 		{
-			len = ft_strlen_sep(str, sep);
-			res[i] = ft_strldup(str, len);
+			str = ft_strldup(res + i, str, sep) - 1;
 			if (!res[i])
 			{
 				ft_free((void **) res, i - 1);
 				return (0);
 			}
 			i++;
-			str += len - 1;
 		}
 		str++;
 	}

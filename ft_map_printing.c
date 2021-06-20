@@ -20,3 +20,24 @@ void	ft_print_rect(int **map, int dim)
 		i++;
 	}
 }
+
+void	ft_print_params(int **params, int dim)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < 4)
+	{
+		j = 0;
+		while (j < dim - 1)
+		{
+			ft_putchar(params[i][j] + '0');
+			ft_putchar(' ');
+			j++;
+		}
+		ft_putchar(params[i][j] + '0');
+		ft_putchar('\n');
+		i++;
+	}
+}

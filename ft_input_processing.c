@@ -32,45 +32,65 @@ int	ft_is_input_numeric(char **params)
 	return (1);
 }
 
-int	ft_process_params(int ***res, char **params)
+int	*ft_get_params_row(char **params, int dim)
 {
 	int	i;
-	int	j;
 	int	p;
+	int	*row;
+
+	row = malloc(sizeof(*row) * dim);
+	if (!row)
+		return (0);
+	i = 0;
+	while (i < dim)
+	{
+		p = ft_atoi(params[i]);
+		if (p > 0 && p <= dim)
+			row[i] = p;
+		else
+		{
+			free(row);
+			return (0);
+		}
+		i++;
+	}
+	return (row);
+}
+
+int	ft_preprocess_params(int ***res, char **params)
+{
 	int	dim;
 
 	dim = ft_strs_count(params);
 	if (dim % 4)
 		return (0);
 	dim /= 4;
-	if (dim < 4)
+	if (dim < 4 || dim > 9)
 		return (0);
 	if (!ft_is_input_numeric(params))
 		return (0);
 	*res = malloc(sizeof(**res) * 4);
 	if (!(*res))
 		return (0);
+	return (dim);
+}
+
+int	ft_process_params(int ***res, char **params)
+{
+	int	i;
+	int	dim;
+
+	dim = ft_preprocess_params(res, params);
+	if (!dim)
+		return (0);
 	i = 0;
 	while (i < 4)
 	{
-		j = 0;
-		(*res)[i] = malloc(sizeof(***res) * dim);
+		(*res)[i] = ft_get_params_row(params + i * dim, dim);
 		if (!(*res)[i])
 		{
 			ft_free((void **) *res, i - 1);
 			return (0);
-		}
-		while (j < dim)
-		{
-			p = ft_atoi(params[4 * i + j]);
-			if (p > 0 && p <= dim)
-				(*res)[i][j] = p;
-			else
-			{
-				ft_free((void **) *res, i - 1);
-				return (0);
-			}
-			j++;
 		}
 		i++;
 	}

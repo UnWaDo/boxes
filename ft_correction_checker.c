@@ -1,3 +1,5 @@
+#include "ft_io.h"
+
 int	ft_observe_level(int **map, int dim, int side, int x);
 
 int	ft_is_observed_correctly(int **map, int **params, int dim)

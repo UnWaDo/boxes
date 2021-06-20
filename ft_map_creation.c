@@ -1,13 +1,15 @@
 #include "ft_memory.h"
 
-void	ft_put_next_to_param(int **map, int dim, int n, int side, int x);
+void	ft_put_next_to_param(int **map, int dim, int side, int x);
 void	ft_put_row_next_to_param(int **map, int dim, int side, int x);
 
-int		**ft_create_map(int dim)
+int	**ft_create_map(int dim)
 {
 	int	i;
 	int	**map;
 
+	if (dim <= 1)
+		return (0);
 	map = malloc(sizeof(*map) * dim);
 	if (!map)
 		return (0);
@@ -55,7 +57,7 @@ void	ft_locate_predefined(int **map, int **params, int dim)
 		while (j < dim)
 		{
 			if (params[i][j] == 1)
-				ft_put_next_to_param(map, dim, dim, i, j);
+				ft_put_next_to_param(map, dim, i, j);
 			if (params[i][j] == dim)
 				ft_put_row_next_to_param(map, dim, i, j);
 			j++;
@@ -64,7 +66,7 @@ void	ft_locate_predefined(int **map, int **params, int dim)
 	}
 }
 
-int		**ft_init_map(int **params, int dim)
+int	**ft_init_map(int **params, int dim)
 {
 	int	**map;
 

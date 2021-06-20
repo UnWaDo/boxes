@@ -38,33 +38,27 @@ int	main(int argc, char **argv)
 {
 	int		**params;
 	int		**map;
-	int		n;
-	int		res;
+	int		val[2];
 
-	n = ft_is_argv_ok(argc, argv, &params);
-	if (!n)
+	val[0] = ft_is_argv_ok(argc, argv, &params);
+	if (!val[0])
 	{
 		ft_print("Error\n");
-		return (0);
+		return (10);
 	}
-	map = ft_init_map(params, n);
+	map = ft_init_map(params, val[0]);
 	if (!map)
 	{
 		ft_print("Error\n");
-		ft_free((void **) params, n);
-		return (0);
+		ft_free((void **) params, val[0]);
+		return (20);
 	}
-	res = ft_find_empty_cell(map, params, n);
-	if (!res)
-	{
+	val[1] = ft_find_empty_cell(map, params, val[0]);
+	if (val[1])
+		ft_print_rect(map, val[0]);
+	else
 		ft_print("Error\n");
-		ft_print_rect(map, n);
-		ft_free((void **) map, n);
-		ft_free((void **) params, n);
-		return (0);
-	}
-	ft_print_rect(map, n);
-	ft_free((void **) map, n);
-	ft_free((void **) params, n);
+	ft_free((void **) map, val[0]);
+	ft_free((void **) params, val[0]);
 	return (0);
 }

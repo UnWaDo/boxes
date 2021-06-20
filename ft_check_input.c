@@ -36,6 +36,19 @@ int	ft_get_next_angle(int **params, int dim, int side)
 		return (params[1][dim - 1]);
 }
 
+int	ft_is_position_correct(int **params, int dim, int x, int y)
+{
+	if (params[x][y] == dim && params[(x / 2) *2 + (1 - x % 2)][y] != 1)
+		return (0);
+	if (params[x][y] == 1 && ft_get_next_angle(params, dim, x) != 1
+		&& ((x / 2 + x % 2 + 1) % 2) * dim == y)
+		return (0);
+	else if (ft_get_next_angle(params, dim, x) == 1 && params[x][y] != 1
+		&& ((x / 2 + x % 2 + 1) % 2) * dim == y)
+		return (0);
+	return (1);
+}
+
 int	ft_is_input_correct(int **params, int dim)
 {
 	int	i;
@@ -51,11 +64,7 @@ int	ft_is_input_correct(int **params, int dim)
 		j = 0;
 		while (j < dim)
 		{
-			if (params[i][j] == dim && params[(i / 2) * 2 + (1 - i % 2)][j] != 1)
-				return (0);
-			if (params[i][j] == 1 && ft_get_next_angle(params, dim, i) != 1 && ((i / 2 + i % 2 + 1) % 2) * dim == j)
-				return (0);
-			else if (ft_get_next_angle(params, dim, i) == 1 && params[i][j] != 1 && ((i / 2 + i % 2 + 1) % 2) * dim == j)
+			if (!ft_is_position_correct(params, dim, i, j))
 				return (0);
 			j++;
 		}

@@ -70,7 +70,7 @@ int	ft_observe_col_negative(int **map, int dim, int col)
 	height = 0;
 	observe = 0;
 	i = dim - 1;
-	while (i <= 0)
+	while (i >= 0)
 	{
 		if (map[i][col] > height)
 		{
