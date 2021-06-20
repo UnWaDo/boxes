@@ -1,35 +1,21 @@
 void	ft_putchar(char c);
 
-char	ft_character_for_map_print(int x, int y, int **map, int *params)
-{
-	if (((x == y) && (x == 0 || x == 5))
-		|| ((x == 5 - y) && (x == 0 || x == 5)))
-		return (' ');
-	if (x == 0)
-		return (params[y - 1] + '0');
-	if (x == 5)
-		return (params[4 - y + 8] + '0');
-	if (y == 0)
-		return (params[4 - x + 12] + '0');
-	if (y == 5)
-		return (params[x - 1 + 4] + '0');
-	return (map[x - 1][y - 1] + '0');
-}
-
-void	ft_print_rect(int **map, int *params)
+void	ft_print_rect(int **map, int dim)
 {
 	int	i;
 	int	j;
 
 	i = 0;
-	while (i < 6)
+	while (i < dim)
 	{
 		j = 0;
-		while (j < 6)
+		while (j < dim - 1)
 		{
-			ft_putchar(ft_character_for_map_print(i, j, map, params));
+			ft_putchar(map[i][j] + '0');
+			ft_putchar(' ');
 			j++;
 		}
+		ft_putchar(map[i][j] + '0');
 		ft_putchar('\n');
 		i++;
 	}

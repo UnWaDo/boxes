@@ -2,13 +2,11 @@
 
 void	ft_print(char *str);
 
-int		ft_process_params(int argc, char **argv, int *params);
-
 int		ft_is_input_correct(int *params);
 
 int		ft_is_repeating(int **map);
 
-void	ft_print_rect(int **map, int *params);
+void	ft_print_rect(int **map, int dim);
 
 void	ft_put_next_to_param(int **map, int to_put, int sector, int position);
 
@@ -26,13 +24,19 @@ int		ft_try_fill (int **map, int *params, int x, int y);
 
 int		ft_is_arguments_correct(int argc, char **argv, int *params);
 
+char	**ft_split(char *str, char *sep);
+
+void	ft_print_strs(char **strs);
+
+int	ft_process_params(int ***res, char **params);
+
 int	ft_is_recursion_end(int **map, int *params)
 {
 	if (ft_is_filled(map))
 	{
 		if (ft_is_observed_correctly(map, params))
 		{
-			ft_print_rect(map, params);
+			//ft_print_rect(map, params);
 			return (1);
 		}
 		return (-1);
@@ -108,13 +112,43 @@ int	ft_fill_rect(int *params)
 
 int	main(int argc, char **argv)
 {
-	int	params[16];
-	int	status;
+	char	**params_raw;
+	int		**params;
+	int		i;
+	int		n;
 
-	if (!ft_is_arguments_correct(argc, argv, params))
+	if (argc != 2)
+	{
+		ft_print("Error\n");
 		return (0);
-	status = ft_fill_rect(params);
-	if (!status)
-		ft_print("No possible transpositions\n");
+	}
+	params_raw = ft_split(argv[1], " \t\n\r\v");
+	if (!params_raw)
+	{
+		ft_print("Error\n");
+		return (0);
+	}
+	params = 0;
+	n = ft_process_params(&params, params_raw);
+	if (!n)
+	{
+		ft_print("Error\n");
+		return (0);
+	}
+	ft_print_rect(params, n);
+	i = 0;
+	while (params_raw[i])
+	{
+		free(params_raw[i]);
+		i++;
+	}
+	free(params_raw);
+	i = 0;
+	while (i < n)
+	{
+		free(params[i]);
+		i++;
+	}
+	free(params);
 	return (0);
 }

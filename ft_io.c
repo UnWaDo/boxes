@@ -1,4 +1,5 @@
 #include <unistd.h>
+#include <stdlib.h>
 
 void	ft_putchar(char c)
 {
@@ -29,4 +30,17 @@ int	ft_atoi(char *str)
 		i++;
 	}
 	return (res);
+}
+
+void	ft_print_strs(char **strs)
+{
+	int	i;
+
+	i = 0;
+	while (strs[i])
+	{
+		ft_print(strs[i]);
+		ft_putchar('\n');
+		i++;
+	}
 }

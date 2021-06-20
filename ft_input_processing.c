@@ -1,64 +1,37 @@
+#include <stdlib.h>
+
 void	ft_print(char *str);
+
+void	ft_putchar(char c);
 
 int		ft_atoi(char *str);
 
-int	ft_process_params(int argc, char **argv, int *params)
+int		ft_word_count(char *str);
+
+void	ft_free(void **array, int n);
+
+int	ft_strs_count(char **params)
 {
 	int	i;
-	int	p;
-
-	i = 1;
-	while (i < argc)
-	{
-		p = ft_atoi(argv[i]);
-		if (p > 0 && p <= 4)
-			params[i - 1] = p;
-		else
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-int	ft_is_ones_correct(int *params, int sector)
-{
-	int	i;
-	int	amount;
 
 	i = 0;
-	amount = 0;
-	while (i < 4 && amount < 2)
-	{
-		if (params[4 * sector + i] == 1)
-		{
-			amount++;
-			if (params[(4 * sector + i + 4) % 16] == 1)
-				return (0);
-			if (params[(4 * (sector + 2) + (3 - i)) % 16] == 1)
-				return (0);
-		}
+	while (params[i])
 		i++;
-	}
-	if (amount >= 2)
-		return (0);
-	return (1);
+	return (i);
 }
 
-int	ft_is_input_correct(int *params)
+int	ft_is_input_numeric(char **params)
 {
 	int	i;
 	int	j;
 
 	i = 0;
-	while (i < 4)
+	while (params[i])
 	{
 		j = 0;
-		if (!ft_is_ones_correct(params, i))
-			return (0);
-		while (j < 4)
+		while (params[i][j])
 		{
-			if (params[4 * i + j] == 4
-				&& params[(4 * (i + 2) + (3 - j)) % 16] != 1)
+			if (params[i][j] < '0' || params[i][j] > '9')
 				return (0);
 			j++;
 		}
@@ -67,31 +40,47 @@ int	ft_is_input_correct(int *params)
 	return (1);
 }
 
-int	ft_is_arguments_correct(int argc, char **argv, int *params)
+int	ft_process_params(int ***res, char **params)
 {
-	int	status;
+	int	i;
+	int	j;
+	int	p;
+	int	dim;
 
-	if (argc <= 16)
-	{
-		ft_print("Not enough arguments\n");
+	dim = ft_strs_count(params);
+	if (dim % 4)
 		return (0);
-	}
-	else if (argc > 17)
-	{
-		ft_print("Too many arguments\n");
+	dim /= 4;
+	if (dim < 4)
 		return (0);
-	}
-	status = ft_process_params(argc, argv, params);
-	if (!status)
-	{
-		ft_print("Invalid arguments input\n");
+	if (!ft_is_input_numeric(params))
 		return (0);
-	}
-	status = ft_is_input_correct(params);
-	if (!status)
-	{
-		ft_print("Impossible transposition\n");
+	*res = malloc(sizeof(**res) * dim);
+	if (!(*res))
 		return (0);
+	i = 0;
+	while (i < dim)
+	{
+		j = 0;
+		(*res)[i] = malloc(sizeof(***res) * dim);
+		if (!(*res)[i])
+		{
+			ft_free((void **) *res, i - 1);
+			return (0);
+		}
+		while (j < dim)
+		{
+			p = ft_atoi(params[4 * i + j]);
+			if (p > 0 && p <= dim)
+				(*res)[i][j] = p;
+			else
+			{
+				ft_free((void **) *res, i - 1);
+				return (0);
+			}
+			j++;
+		}
+		i++;
 	}
-	return (1);
+	return (dim);
 }
