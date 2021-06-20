@@ -1,14 +1,6 @@
-#include <stdlib.h>
-
-void	ft_print(char *str);
-
-void	ft_putchar(char c);
-
-int		ft_atoi(char *str);
-
-int		ft_word_count(char *str);
-
-void	ft_free(void **array, int n);
+#include "ft_io.h"
+#include "ft_strings.h"
+#include "ft_memory.h"
 
 int	ft_strs_count(char **params)
 {
@@ -55,11 +47,11 @@ int	ft_process_params(int ***res, char **params)
 		return (0);
 	if (!ft_is_input_numeric(params))
 		return (0);
-	*res = malloc(sizeof(**res) * dim);
+	*res = malloc(sizeof(**res) * 4);
 	if (!(*res))
 		return (0);
 	i = 0;
-	while (i < dim)
+	while (i < 4)
 	{
 		j = 0;
 		(*res)[i] = malloc(sizeof(***res) * dim);

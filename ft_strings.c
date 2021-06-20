@@ -1,6 +1,5 @@
-#include <stdlib.h>
-
-void	ft_free(void **array, int n);
+#include "ft_io.h"
+#include "ft_memory.h"
 
 int	ft_is_in_str(char c, char *str)
 {
@@ -37,7 +36,7 @@ int	ft_word_count(char *str, char *sep)
 			len++;
 		i++;
 	}
-	if (i && !ft_is_in_str(str[i - 1], sep))
+	if (len)
 		amount++;
 	return (amount);
 }
@@ -47,7 +46,7 @@ int	ft_strlen_sep(char *str, char *sep)
 	int	i;
 
 	i = 0;
-	while (!ft_is_in_str(str[i], sep))
+	while (str[i] && !ft_is_in_str(str[i], sep))
 		i++;
 	return (i);
 }
@@ -91,7 +90,7 @@ char	**ft_split(char *str, char *sep)
 			res[i] = ft_strldup(str, len);
 			if (!res[i])
 			{
-				ft_free((void *) res, i - 1);
+				ft_free((void **) res, i - 1);
 				return (0);
 			}
 			i++;

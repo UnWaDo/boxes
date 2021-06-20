@@ -1,48 +1,61 @@
-int	ft_is_ones_and_dim_correct(int **params, int dim)
+#include "ft_io.h"
+
+int	ft_is_n_occurs_once(int **params, int dim, int n)
 {
 	int	i;
-	int	one_amount;
-	int	dim_amount;
+	int	j;
+	int	amount;
 
 	i = 0;
-	amount = 0;
-	dim_amount = 0;
-	while (i < dim)
+	while (i < 4)
+	{
 		j = 0;
 		amount = 0;
-		dim_amount = 0;
-		while (j < dim && amount < 2 && dim_amount < 2)
+		while (j < dim && amount < 2)
 		{
-			if (params[i][j] == 1)
-			{
+			if (params[i][j] == n)
 				amount++;
-				if (j != 3 && params[(i + 1) % 4][0] == 1)
-					return (0);
-				if (params[(4 * (sector + 2) + (3 - i)) % 16] == 1)
-					return (0);
+			j++;
 		}
-		if (one_amount >= 2 || dim_amount >= 2)
+		if (amount >= 2)
 			return (0);
 		i++;
 	}
 	return (1);
 }
 
-int	ft_is_input_correct(int *params)
+int	ft_get_next_angle(int **params, int dim, int side)
+{
+	if (side == 0)
+		return (params[3][0]);
+	else if (side == 1)
+		return (params[2][dim - 1]);
+	else if (side == 2)
+		return (params[0][0]);
+	else
+		return (params[1][dim - 1]);
+}
+
+int	ft_is_input_correct(int **params, int dim)
 {
 	int	i;
 	int	j;
 
 	i = 0;
+	if (!ft_is_n_occurs_once(params, dim, 1))
+		return (0);
+	if (!ft_is_n_occurs_once(params, dim, dim))
+		return (0);
 	while (i < 4)
 	{
 		j = 0;
-		if (!ft_is_ones_correct(params, i))
-			return (0);
-		while (j < 4)
+		while (j < dim)
 		{
-			if (params[4 * i + j] == 4
-				&& params[(4 * (i + 2) + (3 - j)) % 16] != 1)
+			if (params[i][j] == dim && params[(i / 2) * 2 + (1 - i % 2)][j] != 1)
+				return (0);
+			if (params[i][j] == 1 && ft_get_next_angle(params, dim, i) != 1 && ((i / 2 + i % 2 + 1) % 2) * dim == j)
+				return (0);
+			else if (ft_get_next_angle(params, dim, i) == 1 && params[i][j] != 1 && ((i / 2 + i % 2 + 1) % 2) * dim == j)
 				return (0);
 			j++;
 		}

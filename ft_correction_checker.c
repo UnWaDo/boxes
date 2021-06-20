@@ -1,39 +1,6 @@
-int	ft_observe_level(int **map, int position)
-{
-	int	i;
-	int	observe;
-	int	height;
+int	ft_observe_level(int **map, int dim, int side, int x);
 
-	height = 0;
-	observe = 0;
-	i = 0;
-	while (i < 4)
-	{
-		if (map[position][i] > height)
-		{
-			observe++;
-			height = map[position][i];
-		}
-		i++;
-	}
-	return (observe);
-}
-
-int	ft_is_observed_correctly(int **map, int *params)
-{
-	int	i;
-
-	i = 0;
-	while (i < 16)
-	{
-		if (params[i] != ft_observe_level(map, i))
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-int	ft_is_filled(int **map)
+int	ft_is_observed_correctly(int **map, int **params, int dim)
 {
 	int	i;
 	int	j;
@@ -42,13 +9,39 @@ int	ft_is_filled(int **map)
 	while (i < 4)
 	{
 		j = 0;
-		while (j < 4)
+		while (j < dim)
 		{
-			if (map[i][j] == 0)
+			if (params[i][j] != ft_observe_level(map, dim, i, j))
 				return (0);
 			j++;
 		}
 		i++;
 	}
 	return (1);
+}
+
+int	ft_is_repeating(int **map, int dim, int x, int y)
+{
+	int	i;
+	int	j;
+	int	rep;
+
+	rep = 0;
+	i = 0;
+	j = y;
+	while (i < dim)
+	{
+		if (i != x && map[i][j] == map[x][y])
+			return (1);
+		i++;
+	}
+	i = x;
+	j = 0;
+	while (j < dim)
+	{
+		if (j != y && map[i][j] == map[x][y])
+			return (1);
+		j++;
+	}
+	return (0);
 }
